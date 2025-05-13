@@ -1,16 +1,26 @@
+// ReSharper disable MemberCanBePrivate.Global
 namespace Sefer.Backend.Authentication.Lib;
 
 public static class Extensions
 {
     /// <summary>
-    /// This add the default token authentication to the service collection.
+    /// This adds the default token authentication to the service collection.
     /// The default authentication uses the default token provider that is using
-    /// the network config based configuration. This must be added seperatly!
+    /// the network config based configuration. This must be added separately!
     /// </summary>
     public static IServiceCollection AddTokenAuthentication(this IServiceCollection services) => AddTokenAuthentication<KeyProvider>(services);
 
     /// <summary>
-    /// Adds the token authentication to the service collection given a keyprovider using generics
+    /// Add token to a web application
+    /// </summary>
+    public static WebApplicationBuilder AddTokenAuthentication(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddTokenAuthentication();
+        return builder;
+    }
+    
+    /// <summary>
+    /// Adds the token authentication to the service collection given a key provider using generics
     /// </summary>
     public static IServiceCollection AddTokenAuthentication<T>(this IServiceCollection services) where T : class, IKeyProvider
     {
@@ -19,7 +29,7 @@ public static class Extensions
     }
 
     /// <summary>
-    /// Adds the token authentication to the service collection given a keyprovider
+    /// Adds the token authentication to the service collection given a key provider
     /// </summary>
     public static IServiceCollection AddTokenAuthentication(this IServiceCollection services, IKeyProvider provider)
     {
@@ -78,7 +88,7 @@ public static class Extensions
                         Id = "Bearer"
                     }
                 },
-                Array.Empty<string>()
+                []
             }
         };
 

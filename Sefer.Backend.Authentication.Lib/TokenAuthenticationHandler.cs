@@ -8,6 +8,7 @@ public sealed class TokenAuthenticationHandler : AuthenticationHandler<SchemeOpt
 
     private readonly ITokenGenerator _tokenGenerator;
 
+    [SuppressMessage("ReSharper", "ConvertToPrimaryConstructor")]
     public TokenAuthenticationHandler
     (
         IOptionsMonitor<SchemeOptions> options,
@@ -30,35 +31,9 @@ public sealed class TokenAuthenticationHandler : AuthenticationHandler<SchemeOpt
 
     private Token? GetAuthorizationTokenFromRequest()
     {
-        Token? authorizationToken = null;
-
-        if (HasHeader("X-AccessToken")) authorizationToken = _tokenGenerator.Verify(GetHeader("X-AccessToken"));
-        else if (HasBearerHeader()) authorizationToken = _tokenGenerator.Verify(GetHeader("Authorization")[7..]);
-        else if (HasHeader("Authorization")) authorizationToken = _tokenGenerator.Verify(GetHeader("Authorization"));
-        else if (IsQueryStringAuth()) authorizationToken = _tokenGenerator.Verify(Request.Query["access_token"]!);
-        else if (HasAuthorizationCookie()) authorizationToken = _tokenGenerator.Verify(Request.Cookies[SessionName]!);
-
-        return authorizationToken;
+        var provider = new TokenAuthenticationProvider(Request, _tokenGenerator);
+        return provider.GetAuthorizationTokenFromRequest();
     }
-
-    private bool HasHeader(string header)
-    {
-        return Request.Headers.ContainsKey(header);
-    }
-
-    private string GetHeader(string header)
-    {
-        return HasHeader(header) == false ? string.Empty : Request.Headers[header].ToString();
-    }
-
-    private bool HasBearerHeader()
-    {
-        return HasHeader("Authorization") && Request.Headers["Authorization"].ToString().StartsWith("Bearer ");
-    }
-
-    private bool HasAuthorizationCookie() =>
-            Request.Cookies.ContainsKey(SessionName) &&
-            !string.IsNullOrEmpty(Request.Cookies[SessionName]);
 
     private static Task<AuthenticateResult> Fail()
     {
@@ -76,8 +51,4 @@ public sealed class TokenAuthenticationHandler : AuthenticationHandler<SchemeOpt
         var claimsIdentity = new ClaimsIdentity(claims, nameof(TokenAuthenticationHandler));
         return new AuthenticationTicket(new ClaimsPrincipal(claimsIdentity), Scheme.Name);
     }
-
-    private bool IsQueryStringAuth() =>
-        Request.Query.ContainsKey("access_token") &&
-        !string.IsNullOrEmpty(Request.Query["access_token"]);
 }

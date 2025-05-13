@@ -13,3 +13,4 @@ global using Microsoft.AspNetCore.DataProtection;
 global using System.Globalization;
 global using Sefer.Backend.Authentication.Lib.Cryptography;
 global using System.Web;
+global using System.Diagnostics.CodeAnalysis;
