@@ -1,6 +1,4 @@
-using System.Security.Cryptography;
-
-namespace Sefer.Backend.Authentication.Lib.Tests.Cryptography;
+namespace Sefer.Backend.Authentication.Lib.Cryptography;
 
 public static class Random
 {

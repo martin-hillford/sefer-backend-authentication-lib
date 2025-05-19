@@ -1,3 +1,5 @@
+using Random = Sefer.Backend.Authentication.Lib.Cryptography.Random;
+
 namespace Sefer.Backend.Authentication.Lib.Tests.Cryptography;
 
 [TestClass]
