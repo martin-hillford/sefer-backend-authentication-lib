@@ -1,3 +1,4 @@
+// ReSharper disable MemberCanBePrivate.Global
 namespace Sefer.Backend.Authentication.Lib.Cryptography;
 
 public static class Hashing
@@ -9,15 +10,22 @@ public static class Hashing
         return Convert.ToBase64String(bytes);
     }
 
-    public static string SHA512(string value)
+    public static string Sha512(string value)
     {
         var data = Encoding.UTF8.GetBytes(value);
-        return SHA512(data);
+        return Sha512(data);
     }
 
-    public static string SHA512(byte[] data)
+    public static string Sha512(byte[] data)
     {
-        var bytes = System.Security.Cryptography.SHA512.HashData(data);
+        var bytes = SHA512.HashData(data);
         return Convert.ToBase64String(bytes);
+    }
+    
+    public static string Sha256(string data)
+    {
+        var bytes = Encoding.UTF8.GetBytes(data);
+        var hash = SHA256.HashData(bytes);
+        return Convert.ToHexString(hash).ToLower().Replace("-", "");
     }
 }

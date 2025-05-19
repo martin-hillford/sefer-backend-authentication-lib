@@ -4,6 +4,9 @@ public class TokenAuthenticationProvider(HttpRequest request, ITokenGenerator to
 {
     private const string SessionName = "auth-id";
     
+    public TokenAuthenticationProvider(HttpRequest request, IServiceProvider provider) 
+        : this(request, provider.GetRequiredService<ITokenGenerator>()) { }
+    
     public bool IsAuthenticated() => GetAuthorizationTokenFromRequest() != null;
 
     public bool IsAuthenticated(string role)

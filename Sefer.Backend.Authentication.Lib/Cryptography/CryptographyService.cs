@@ -67,7 +67,7 @@ public sealed class CryptographyService(IDataProtectionProvider dataProtectionPr
     /// <param name="salt">The salt to use</param>
     /// <returns>A strong (like SHA256 type) hash of value with a salt included</returns>
     /// <inheritdoc />
-    public string Hash(string value, string salt) => Hashing.SHA512(value + salt);
+    public string Hash(string value, string salt) => Hashing.Sha512(value + salt);
 
     /// <summary>
     /// The string value to provide a salted hash for password.

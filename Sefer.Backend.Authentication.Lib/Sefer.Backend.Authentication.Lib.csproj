@@ -16,7 +16,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <IncludeSource>true</IncludeSource>
     <PackageId>Sefer.Backend.Authentication.Lib</PackageId>
-    <Version>1.1.10</Version>
+    <Version>1.1.12</Version>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
